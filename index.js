@@ -56,7 +56,7 @@ io.on('connection', function (socket) {
     }
   });
 });
-
-http.listen(9443, function(){
-  console.log('listening on *:9443');
+var port = process.env.PORT || 8080;
+http.listen(port || 8080;, function(){
+  console.log('listening on'+port);
 });
