@@ -5,23 +5,12 @@ var _ = require('lodash-node');
 
 var users = [];
 
-var request = require('request'), 
-    fs      = require('fs'),
-    url     = 'http://upload.wikimedia.org/wikipedia/commons/8/8c/JPEG_example_JPG_RIP_025.jpg';
-
-request(url, {encoding: 'binary'}, function(error, response, body) {
-  fs.writeFile('downloaded.jpg', body, 'binary', function (err) {});
-});
 
 app.get('/', function (req, res){
   res.sendfile('index.html');
 });
 
-app.get('/image', function (req, res){
-  request(url, {encoding: 'binary'}, function(error, response, body) {
-    fs.writeFile('downloaded.jpg', body, 'binary', function (err) {});
-  });
-});
+
 
 io.on('connection', function (socket) {
   socket.on('login', function (name) {
