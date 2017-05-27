@@ -44,7 +44,7 @@ io.on('connection', function (socket) {
 
     var contact = _.find(users, { name: name });
     if (!contact) { return; }
-    
+    console.log(name);
     io.to(contact.socket)
       .emit('messageReceived', currentUser.name, message);
   });
