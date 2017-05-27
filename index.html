@@ -151,18 +151,29 @@ ul {
   padding-left: 10px;
   position: absolute;
   right: 0;
-  width: 100%;
+  width: 90%;
 }
+button{
+   width:10%; 
+   float:right;
+   margin-top: -60px;
+   padding: 20px 0px;
+}
+.userlist{position:fixed;top:0px;background:'whitesmoke';right:0px; }
   </style>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.1/socket.io.js"></script>
 </head>
 <body>
+   <!-- <div class="userlist">
+
+    </div>-->
   <ul class="pages">
     <li class="chat page">
       <div class="chatArea">
         <ul class="messages"></ul>
       </div>
       <input class="inputMessage" placeholder="Type here..."/>
+      <button id="send" onclick="sendMsg()">Send</button>
     </li>
     <li class="login page">
       <div class="form">
@@ -178,17 +189,71 @@ ul {
 </html>
 
 <script>
+    var socket,name,list=[];
 $( document ).ready(function(){
-  var socket = io("https://phonertc-demo.herokuapp.com/");
+  socket = io("https://phonertc-demo.herokuapp.com/");
   console.log(socket);
+
+  socket.on('login_successful',function(data){
+        console.log(data);
+         list = data;
+        $('.login').css("display","none");
+        $('.chat').css("display","block");
+  })
+  
+    socket.on('login_error',function(data){
+        console.log(data);
+
+  })
+  socket.on('online',function(data){
+       
+        if(list.indexOf(data) <= 0){
+            list.push(data);
+        }
+        updateusers();
+        console.log(list);
+
+  })
+  
+socket.on('messageReceived',function(name,msg){
+        console.log(name);
+        console.log(msg);
+        var html = "<div><span>"+name+"</span> - <span>"+msg+"</span></div>"
+        $('.messages').append(html);
+  })
+  
 });
 
+function updateusers(){
+    var html = "";
+    list.forEach(function(data){
+        html +=+ "<div>"+data+"</div>"
+    })
+    $('.userlist').html(html);
+}
+
+function sendMsg(){
+    var msg = $('.inputMessage').val();
+    if(msg){
+            list.forEach(function(element) {
+                socket.emit('sendMessage', element,msg,
+                function(data){
+                    console.log("sent");
+                }
+                );
+            }, this);
+            
+        
+    }
+}
+
 function login(){
-    var name = $('.usernameInput').val();
+    name = $('.usernameInput').val();
     if(name){
         socket.emit('login', name,
         function(data){
-            console.log(data);
+            console.log("sdfsd");
+           
         }
         );
     }
