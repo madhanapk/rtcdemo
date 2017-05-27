@@ -168,6 +168,7 @@ ul {
       <div class="form">
         <h3 class="title">What's your nickname?</h3>
         <input class="usernameInput" type="text" maxlength="14" />
+        <button id="login" onclick="login()">Login</button>
       </div>
     </li>
   </ul>
@@ -180,6 +181,17 @@ ul {
 $( document ).ready(function(){
   var socket = io("https://phonertc-demo.herokuapp.com/");
   console.log(socket);
-})
+});
+
+function login(){
+    var name = $('.usernameInput').val();
+    if(name){
+        socket.emit('login', name,
+        function(data){
+            console.log(data);
+        }
+        );
+    }
+}
 
 </script>
