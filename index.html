@@ -231,7 +231,7 @@ socket.on('messageReceived',function(name,msg){
 function updateusers(){
     var html = "";
     list.forEach(function(data){
-        html +=+ "<div>"+data+"</div>"
+        html += "<div>"+data+"</div>"
     })
     $('.userlist').html(html);
 }
