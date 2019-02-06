@@ -205,6 +205,10 @@ $( document ).ready(function(){
         console.log(data);
 
   })
+   socket.on('offline',function(data){
+        console.log(data);
+
+  })
   socket.on('online',function(data){
        
         if(list.indexOf(data) <= 0){
